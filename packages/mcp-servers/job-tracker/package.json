@@ -1,14 +1,12 @@
 {
   "name": "@job-search-agent/mcp-job-tracker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "bin": {
     "mcp-job-tracker": "./src/index.ts"
   },
   "dependencies": {
-    "@job-search-agent/db": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.12.0",
-    "drizzle-orm": "^0.45.1",
     "nanoid": "^5.0.9",
     "zod": "^3.25.1"
   }

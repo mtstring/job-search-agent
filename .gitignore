@@ -12,6 +12,9 @@ drizzle/
 knowledge/*.md
 knowledge/companies/
 
+# application data - personal data (not tracked)
+data/applications/*.md
+
 # keep templates and readme
 !knowledge/README.md
 !knowledge/_*.template.md

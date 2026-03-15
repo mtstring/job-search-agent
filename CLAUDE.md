@@ -65,17 +65,39 @@ knowledge/
 会話中にユーザーの経歴・考えが出てきたら、積極的に `knowledge/` ファイルへの記録を提案する。
 各社向けの志望動機書・職務経歴書を生成する際は、`knowledge/profile.md` と `knowledge/companies/{name}.md` を参照する。
 
+## データ管理（data/applications/）
+
+応募企業ごとに1つの Markdown ファイルで管理する。gitignore されており、ローカルにのみ存在する。
+
+```
+data/applications/
+└── {company-slug}-{id}.md   # 応募企業ごとのファイル
+```
+
+各ファイルの構造：
+```markdown
+---
+id: abc123
+company_name: ABC株式会社
+position: エンジニア
+status: interview
+applied_at: 2026-01-15
+updated_at: 2026-01-20
+---
+
+## メモ
+
+...
+
+## タスク
+
+- [x] 履歴書送付 `id:xxx` `priority:medium` `completed:2026-01-10`
+- [ ] 一次面接準備 `id:yyy` `priority:high` `due:2026-01-25`
+```
+
 ## セットアップ
 
 ```bash
 # 依存インストール
 bun install
-
-# DB初期化
-cd packages/db && bun run db:push && cd ../..
-
-# .env を設定
-cp .env.example .env
-# ANTHROPIC_API_KEY を設定（Claude Codeを使う場合は不要）
-# DATABASE_URL=file:./job-search-agent.db
 ```

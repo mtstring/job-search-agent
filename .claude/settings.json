@@ -2,10 +2,7 @@
   "mcpServers": {
     "job-tracker": {
       "command": "bun",
-      "args": ["packages/mcp-servers/job-tracker/src/index.ts"],
-      "env": {
-        "DATABASE_URL": "file:./packages/db/job-search-agent.db"
-      }
+      "args": ["packages/mcp-servers/job-tracker/src/index.ts"]
     }
   }
 }
