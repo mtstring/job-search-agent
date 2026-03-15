@@ -1,4 +1,5 @@
 node_modules/
+.DS_Store
 .env
 *.db
 *.db-wal
@@ -6,3 +7,11 @@ node_modules/
 dist/
 .turbo/
 drizzle/
+
+# knowledge base - personal data (not tracked)
+knowledge/*.md
+knowledge/companies/
+
+# keep templates and readme
+!knowledge/README.md
+!knowledge/_*.template.md

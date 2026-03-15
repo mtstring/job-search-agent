@@ -1,28 +1,40 @@
 # job-search-agent
 
-転職支援AIエージェント - OpenClaw Skills として実装
+転職活動を支援する Claude Code エージェント。会話するだけで応募企業の管理・タスク管理・キャリア相談ができます。
 
-## 概要
+## 使い方
 
-このリポジトリは OpenClaw（Discord Bot）のスキルとして動作する転職支援AIエージェントです。
-Discordから以下のコマンドで転職活動を管理できます。
+```bash
+cd ~/Work/ai-agents/job-search-agent
+claude
+```
 
-## スキル一覧
+起動したら、普通に話しかけるだけでOKです。
 
-| スキル | コマンド例 | 説明 |
-|--------|-----------|------|
-| job-chat | `/job-chat 面接対策を手伝って` | キャリア相談・AIエージェントとの対話 |
-| job-status | `/job-status` | 応募状況の一覧表示 |
-| job-add | `/job-add --company "株式会社ABC" --position "エンジニア"` | 応募企業の登録 |
-| job-reminder | `/job-reminder` | 期限切れタスクの確認 |
+```
+「○○社のエンジニアポジションに応募した」
+→ 自動でDBに登録
+
+「今の応募状況を見せて」
+→ 一覧を表示
+
+「○○社の選考が一次面接に進んだ」
+→ ステータスを更新
+
+「面接対策のタスクを追加して」
+→ タスクを登録
+
+「期限が近いタスクある？」
+→ 期限超過・滞留タスクを確認
+```
 
 ## セットアップ
 
 ### 1. リポジトリをクローン
 
 ```bash
-git clone <repo-url> ~/Work/ai-agents/job-search-agent
-cd ~/Work/ai-agents/job-search-agent
+git clone https://github.com/mtstring/job-search-agent.git
+cd job-search-agent
 ```
 
 ### 2. 依存パッケージをインストール
@@ -31,70 +43,44 @@ cd ~/Work/ai-agents/job-search-agent
 bun install
 ```
 
-### 3. 環境変数を設定
-
-プロジェクトルートに `.env` ファイルを作成：
-
-```env
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxx
-DATABASE_URL=file:./job-search-agent.db
-```
-
-- `ANTHROPIC_API_KEY`: Anthropic API キー（[console.anthropic.com](https://console.anthropic.com) で取得）
-- `DATABASE_URL`: SQLiteデータベースのパス（libsql形式: `file:./path/to/db.sqlite`）
-
-### 4. データベースのマイグレーション
+### 3. データベースを初期化
 
 ```bash
-cd packages/db
-bun run db:push
+cd packages/db && bun run db:push && cd ../..
 ```
 
-### 5. OpenClaw スキルをインストール
+### 4. 起動
 
 ```bash
-bash setup-skills.sh
+claude
 ```
 
-このスクリプトは `~/.openclaw/skills/` 配下に各スキルへのシンボリックリンクを作成します。
+> **Note:** Claude Code を使う場合、`ANTHROPIC_API_KEY` は不要です。Claude Code の認証がそのまま使われます。
 
-### 6. OpenClaw を再起動
+## 知識ベース（任意）
 
-```bash
-# OpenClaw の再起動方法は環境に応じて変更してください
-# 例: pm2 restart openclaw
+`knowledge/` 配下に自分の経歴・転職軸・企業メモを書いておくと、志望動機書や職務経歴書の生成に活用されます。テンプレートを参考にしてください。
+
 ```
+knowledge/
+├── _profile.template.md    # 経歴・スキルのテンプレート
+├── _resume.template.md     # 職務経歴書のテンプレート
+├── _values.template.md     # 転職軸・条件のテンプレート
+└── _company.template.md    # 企業メモのテンプレート
+```
+
+テンプレートをコピーして `_` を外したファイル名で保存してください（例: `profile.md`）。知識ベースのファイルは `.gitignore` されており、リポジトリには含まれません。
 
 ## プロジェクト構成
 
 ```
 job-search-agent/
-├── skills/
-│   ├── job-chat/SKILL.md       # キャリア相談スキル
-│   ├── job-status/SKILL.md     # 応募状況確認スキル
-│   ├── job-add/SKILL.md        # 応募企業追加スキル
-│   └── job-reminder/SKILL.md  # 期限タスク確認スキル
+├── CLAUDE.md                   # エージェント定義（Claude Code用）
+├── .claude/settings.json       # MCPサーバー設定
+├── knowledge/                  # 個人の経歴・企業メモ（gitignore）
 ├── packages/
 │   ├── db/                     # データベース層（Drizzle ORM + libsql）
-│   ├── agents/
-│   │   └── src/
-│   │       ├── cli.ts          # CLIエントリポイント（スキルから呼び出される）
-│   │       └── orchestrator.ts # AIエージェントオーケストレーター
 │   └── mcp-servers/
-│       └── job-tracker/        # MCP サーバー
-├── setup-skills.sh             # OpenClaw スキルセットアップスクリプト
-└── README.md
-```
-
-## 開発
-
-```bash
-# 型チェック
-bun tsc --noEmit
-
-# CLIを直接テスト
-bun packages/agents/src/cli.ts chat "こんにちは"
-bun packages/agents/src/cli.ts status
-bun packages/agents/src/cli.ts add-application --company "テスト株式会社" --position "エンジニア"
-bun packages/agents/src/cli.ts overdue-tasks
+│       └── job-tracker/        # MCP サーバー（ツール実装）
+└── package.json
 ```
