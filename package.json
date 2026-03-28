@@ -1,7 +1,7 @@
 {
   "name": "job-search-agent",
   "private": true,
-  "workspaces": ["packages/mcp-servers/*"],
+  "workspaces": ["packages/*", "packages/mcp-servers/*"],
   "scripts": {
     "lint": "biome check .",
     "format": "biome format --write ."

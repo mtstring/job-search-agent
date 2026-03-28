@@ -58,12 +58,29 @@ knowledge/
 ├── resume.md        # 詳細な職務経歴
 ├── values.md        # 転職軸・条件・給与希望
 ├── thoughts.md      # 日々の考え・気づき
-└── companies/
-    └── {name}.md    # 各社メモ・志望動機
+├── companies/
+│   └── {会社名}/        # 会社ごとにディレクトリを作成
+│       ├── memo.md          # 企業メモ・志望動機
+│       ├── meeting-prep.md  # 面接対策
+│       ├── resume.md        # 会社向けカスタム職歴
+│       └── ...              # その他会社固有の資料
+└── networking/
+    └── {YYYY-MM-DD}-{name}.md  # 個人との面談・会食・ランチごとに1ファイル
 ```
 
+### knowledge/ の使い分けルール
+
+**企業との面接・面談** → `knowledge/companies/{会社名}/`
+- 企業研究・志望動機・面接準備はここを参照・更新する
+
+**個人との会食・ランチ・ネットワーキング** → `knowledge/networking/`
+- ファイル名: `{YYYY-MM-DD}-{人物slug}.md`
+- 人物情報・背景・話したいこと・当日メモ・フォローアップを記録する
+- 会話で個人の名前が出てきたら、まずここを検索すること
+
 会話中にユーザーの経歴・考えが出てきたら、積極的に `knowledge/` ファイルへの記録を提案する。
-各社向けの志望動機書・職務経歴書を生成する際は、`knowledge/profile.md` と `knowledge/companies/{name}.md` を参照する。
+各社向けの志望動機書・職務経歴書を生成する際は、`knowledge/profile.md` と `knowledge/companies/{会社名}/` 以下のファイルを参照する。
+新しい会社の情報を作成する場合は `knowledge/companies/{会社名}/` ディレクトリを作り、その中にファイルを配置する。
 
 ## データ管理（data/applications/）
 
@@ -83,6 +100,7 @@ position: エンジニア
 status: interview
 applied_at: 2026-01-15
 updated_at: 2026-01-20
+email_domain: abc.co.jp, ats-system.com   # メール監視用ドメイン（カンマ区切りで複数指定可）
 ---
 
 ## メモ

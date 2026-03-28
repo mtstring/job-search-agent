@@ -9,12 +9,20 @@ dist/
 drizzle/
 
 # knowledge base - personal data (not tracked)
-knowledge/*.md
-knowledge/companies/
+knowledge/
 
 # application data - personal data (not tracked)
 data/applications/*.md
 
-# keep templates and readme
-!knowledge/README.md
-!knowledge/_*.template.md
+# Claude Code - ローカル設定・���ッション
+.claude/settings.json
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/scheduled_tasks.json
+.claude-session-log.md
+
+# 個人インフラ���デーモン・拡張MCP・ス��リプト）
+packages/discord-bot/
+packages/gmail-daemon/
+packages/mcp-servers/google-calendar/
+scripts/

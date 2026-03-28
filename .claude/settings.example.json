@@ -1,0 +1,27 @@
+{
+  "env": {
+    "TZ": "Asia/Tokyo"
+  },
+  "mcpServers": {
+    "job-tracker": {
+      "command": "bun",
+      "args": ["packages/mcp-servers/job-tracker/src/index.ts"]
+    }
+  },
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebFetch"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+}
