@@ -22,9 +22,9 @@ async function ensureDataDir() {
 
 // --- Frontmatter パーサー ---
 
-type Frontmatter = Record<string, string>;
+export type Frontmatter = Record<string, string>;
 
-function parseFrontmatter(content: string): { data: Frontmatter; body: string } {
+export function parseFrontmatter(content: string): { data: Frontmatter; body: string } {
   const match = content.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
   if (!match) return { data: {}, body: content };
 
@@ -39,7 +39,7 @@ function parseFrontmatter(content: string): { data: Frontmatter; body: string } 
   return { data, body: match[2] };
 }
 
-function stringifyFrontmatter(data: Frontmatter, body: string): string {
+export function stringifyFrontmatter(data: Frontmatter, body: string): string {
   const yaml = Object.entries(data)
     .map(([k, v]) => `${k}: ${v}`)
     .join("\n");
@@ -50,7 +50,7 @@ function stringifyFrontmatter(data: Frontmatter, body: string): string {
 // 書式: - [ ] タイトル `id:xxx` `priority:high` `due:2026-01-20`
 //       - [x] タイトル `id:xxx` `priority:medium` `completed:2026-01-10`
 
-interface Task {
+export interface Task {
   id: string;
   title: string;
   completed: boolean;
@@ -60,7 +60,7 @@ interface Task {
   application_id?: string;
 }
 
-function parseTasks(body: string, application_id?: string): Task[] {
+export function parseTasks(body: string, application_id?: string): Task[] {
   const tasks: Task[] = [];
   const taskRegex = /^- \[([ x])\] (.+)$/gm;
   let match: RegExpExecArray | null;
@@ -85,7 +85,7 @@ function parseTasks(body: string, application_id?: string): Task[] {
   return tasks;
 }
 
-function taskToLine(task: Omit<Task, "application_id" | "completed">): string {
+export function taskToLine(task: Omit<Task, "application_id" | "completed">): string {
   let line = `- [ ] ${task.title} \`id:${task.id}\``;
   line += ` \`priority:${task.priority}\``;
   if (task.due_date) line += ` \`due:${task.due_date}\``;
@@ -94,7 +94,7 @@ function taskToLine(task: Omit<Task, "application_id" | "completed">): string {
 
 // --- ファイル操作 ---
 
-interface Application {
+export interface Application {
   id: string;
   company_name: string;
   position: string;
@@ -136,7 +136,7 @@ async function readAllApplications(): Promise<Application[]> {
   return apps;
 }
 
-function applicationToMarkdown(app: Application, existingBody?: string): string {
+export function applicationToMarkdown(app: Application, existingBody?: string): string {
   const data: Frontmatter = {
     id: app.id,
     company_name: app.company_name,

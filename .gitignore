@@ -12,7 +12,7 @@ drizzle/
 knowledge/
 
 # application data - personal data (not tracked)
-data/applications/*.md
+data/
 
 # Claude Code - ローカル設定・���ッション
 .claude/settings.json
