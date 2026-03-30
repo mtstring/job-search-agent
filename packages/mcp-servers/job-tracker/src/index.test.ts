@@ -5,8 +5,8 @@ import {
   parseTasks,
   taskToLine,
   applicationToMarkdown,
-  type Application,
-} from "./index.ts";
+} from "./parsers.ts";
+import type { Application } from "./types.ts";
 
 // --- parseFrontmatter ---
 
