@@ -26,3 +26,5 @@ packages/discord-bot/
 packages/gmail-daemon/
 packages/mcp-servers/google-calendar/
 scripts/
+.notta-sync/
+logs/
