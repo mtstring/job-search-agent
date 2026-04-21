@@ -115,8 +115,10 @@ job-search-agent/
 ```bash
 git clone https://github.com/mtstring/job-search-agent.git
 cd job-search-agent
-bun install
+bun install   # prepare スクリプトが pre-commit hook (.githooks/) を有効化
 ```
+
+pre-commit では `bun run lint`（biome）と `bun test`（job-tracker）が走る。
 
 ### 2. Claude Code の設定
 

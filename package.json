@@ -4,7 +4,8 @@
   "workspaces": ["packages/*", "packages/mcp-servers/*"],
   "scripts": {
     "lint": "biome check .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

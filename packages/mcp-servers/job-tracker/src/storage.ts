@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
-import { mkdir, readdir, readFile } from "node:fs/promises";
+import { mkdir, readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
-import type { Application } from "./types.ts";
 import { parseFrontmatter, parseTasks } from "./parsers.ts";
+import type { Application } from "./types.ts";
 
 // data/applications/ はプロジェクトルートに置く
 export const DATA_DIR = join(import.meta.dir, "../../../../data/applications");

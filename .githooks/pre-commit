@@ -1,0 +1,10 @@
+#!/bin/sh
+# Pre-commit hook: run lint + tests for tracked code.
+# Enabled via `bun install` (prepare script sets core.hooksPath).
+set -e
+
+echo "▶ biome check"
+bun run lint
+
+echo "▶ bun test (job-tracker)"
+bun test packages/mcp-servers/job-tracker

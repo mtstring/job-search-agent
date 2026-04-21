@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import {
-  parseFrontmatter,
-  stringifyFrontmatter,
-  parseTasks,
-  taskToLine,
   applicationToMarkdown,
+  parseFrontmatter,
+  parseTasks,
+  stringifyFrontmatter,
+  taskToLine,
 } from "./parsers.ts";
 import type { Application } from "./types.ts";
 
@@ -121,13 +121,13 @@ describe("parseTasks", () => {
   });
 
   test("application_id を引き継ぐ", () => {
-    const body = `- [ ] テスト \`id:t001\` \`priority:medium\``;
+    const body = "- [ ] テスト `id:t001` `priority:medium`";
     const tasks = parseTasks(body, "app-001");
     expect(tasks[0].application_id).toBe("app-001");
   });
 
   test("priority が省略された場合は medium になる", () => {
-    const body = `- [ ] テスト \`id:t001\``;
+    const body = "- [ ] テスト `id:t001`";
     const tasks = parseTasks(body);
     expect(tasks[0].priority).toBe("medium");
   });
@@ -183,8 +183,20 @@ describe("applicationToMarkdown", () => {
     const app: Application = {
       ...baseApp,
       tasks: [
-        { id: "t001", title: "面接準備", completed: false, priority: "high", due_date: "2026-04-01" },
-        { id: "t002", title: "書類提出", completed: true, priority: "medium", completed_at: "2026-03-15" },
+        {
+          id: "t001",
+          title: "面接準備",
+          completed: false,
+          priority: "high",
+          due_date: "2026-04-01",
+        },
+        {
+          id: "t002",
+          title: "書類提出",
+          completed: true,
+          priority: "medium",
+          completed_at: "2026-03-15",
+        },
       ],
     };
     const md = applicationToMarkdown(app);
@@ -193,7 +205,8 @@ describe("applicationToMarkdown", () => {
   });
 
   test("既存のメモを保持しつつタスクセクションを更新する", () => {
-    const existingBody = "\n## メモ\n\n重要なメモ\n\n## タスク\n- [ ] 古いタスク `id:old` `priority:low`";
+    const existingBody =
+      "\n## メモ\n\n重要なメモ\n\n## タスク\n- [ ] 古いタスク `id:old` `priority:low`";
     const app: Application = {
       ...baseApp,
       tasks: [{ id: "t001", title: "新しいタスク", completed: false, priority: "high" }],

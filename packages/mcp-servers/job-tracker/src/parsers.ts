@@ -31,8 +31,8 @@ export function stringifyFrontmatter(data: Frontmatter, body: string): string {
 export function parseTasks(body: string, application_id?: string): Task[] {
   const tasks: Task[] = [];
   const taskRegex = /^- \[([ x])\] (.+)$/gm;
-  let match: RegExpExecArray | null;
-  while ((match = taskRegex.exec(body)) !== null) {
+  let match = taskRegex.exec(body);
+  while (match !== null) {
     const completed = match[1] === "x";
     const rest = match[2];
     const idMatch = rest.match(/`id:([^`]+)`/);
@@ -49,6 +49,7 @@ export function parseTasks(body: string, application_id?: string): Task[] {
       completed_at: completedMatch?.[1],
       application_id,
     });
+    match = taskRegex.exec(body);
   }
   return tasks;
 }

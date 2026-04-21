@@ -1,10 +1,15 @@
-import { readdir, readFile, writeFile } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import type { Application, Task } from "./types.ts";
-import { applicationToMarkdown, parseFrontmatter, stringifyFrontmatter, taskToLine } from "./parsers.ts";
+import {
+  applicationToMarkdown,
+  parseFrontmatter,
+  stringifyFrontmatter,
+  taskToLine,
+} from "./parsers.ts";
 import { DATA_DIR, ensureDataDir, readAllApplications } from "./storage.ts";
+import type { Application, Task } from "./types.ts";
 
 // --- ツール定義（ListToolsSchema 用） ---
 
@@ -135,7 +140,18 @@ export async function handleToolCall(name: string, args: unknown) {
         content: [
           {
             type: "text",
-            text: JSON.stringify({ id, company_name: input.company_name, position: input.position, status: "applied", applied_at: today, file: filePath }, null, 2),
+            text: JSON.stringify(
+              {
+                id,
+                company_name: input.company_name,
+                position: input.position,
+                status: "applied",
+                applied_at: today,
+                file: filePath,
+              },
+              null,
+              2
+            ),
           },
         ],
       };
@@ -176,7 +192,11 @@ export async function handleToolCall(name: string, args: unknown) {
         content: [
           {
             type: "text",
-            text: JSON.stringify({ id: input.id, status: input.status, updated_at: data.updated_at }, null, 2),
+            text: JSON.stringify(
+              { id: input.id, status: input.status, updated_at: data.updated_at },
+              null,
+              2
+            ),
           },
         ],
       };
@@ -221,9 +241,10 @@ export async function handleToolCall(name: string, args: unknown) {
       };
 
       if (input.application_id) {
+        const appId = input.application_id;
         const files = await readdir(DATA_DIR);
-        const file = files.find((f) => f.endsWith(".md") && f.includes(input.application_id!));
-        if (!file) throw new Error(`応募ID ${input.application_id} が見つかりません`);
+        const file = files.find((f) => f.endsWith(".md") && f.includes(appId));
+        if (!file) throw new Error(`応募ID ${appId} が見つかりません`);
 
         const filePath = join(DATA_DIR, file);
         const content = await readFile(filePath, "utf-8");
@@ -244,7 +265,17 @@ export async function handleToolCall(name: string, args: unknown) {
         content: [
           {
             type: "text",
-            text: JSON.stringify({ id: taskId, title: input.title, priority: input.priority, due_date: input.due_date, application_id: input.application_id }, null, 2),
+            text: JSON.stringify(
+              {
+                id: taskId,
+                title: input.title,
+                priority: input.priority,
+                due_date: input.due_date,
+                application_id: input.application_id,
+              },
+              null,
+              2
+            ),
           },
         ],
       };
@@ -268,10 +299,7 @@ export async function handleToolCall(name: string, args: unknown) {
         const today = new Date().toISOString().split("T")[0];
 
         // タスク行を更新: - [ ] → - [x] + completed タグ追記
-        const taskIdPattern = new RegExp(
-          `(- \\[)[ ](\\] .+\`id:${input.id}\`[^\n]*)`,
-          "m"
-        );
+        const taskIdPattern = new RegExp(`(- \\[)[ ](\\] .+\`id:${input.id}\`[^\n]*)`, "m");
         const updated = content
           .replace(taskIdPattern, `$1x$2 \`completed:${today}\``)
           .replace(/\n---\n/, `\nupdated_at: ${today}\n---\n`);
@@ -284,7 +312,9 @@ export async function handleToolCall(name: string, args: unknown) {
       if (!found) throw new Error(`タスクID ${input.id} が見つかりません`);
 
       return {
-        content: [{ type: "text", text: JSON.stringify({ id: input.id, completed: true }, null, 2) }],
+        content: [
+          { type: "text", text: JSON.stringify({ id: input.id, completed: true }, null, 2) },
+        ],
       };
     }
 

@@ -1,11 +1,8 @@
 #!/usr/bin/env bun
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { toolDefinitions, handleToolCall } from "./tools.ts";
+import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
+import { handleToolCall, toolDefinitions } from "./tools.ts";
 
 const server = new Server(
   { name: "job-search-agent", version: "0.2.0" },
